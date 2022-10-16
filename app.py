@@ -4,14 +4,16 @@ from unittest.mock import DEFAULT
 import streamlit as st
 import pandas as pd
 
+st.set_page_config(
+    page_title="KPIs Transaccionales",
+    page_icon=":bowtie:",
+    layout="centered")
+
+st.title("Kpis Data Transaccional :chart_with_upwards_trend:")
+st.subheader("Suba su documento de extensión (.csv)")
 
 
-
-st.title("Analisis de datos")
-st.subheader("Introduzca su documento .csv")
-
-
-uploaded_file = st.file_uploader("Seleccione su CSV", accept_multiple_files=False, key="data")
+uploaded_file = st.file_uploader("Suba su CSV", accept_multiple_files=False, key="data")
 
 
 if uploaded_file is not None:
@@ -21,11 +23,11 @@ if uploaded_file is not None:
         return csv
     df = load_csv()
     st.write("---")
-    st.subheader("Ejemplo cargado")
+    st.subheader("Visualización Previa")
     st.write(df.head(2))
     st.write("---")
     
-    st.subheader("Datos de la tabla")
+    st.subheader("Seleccione la columna correspondiente")
 
     opciones = list(df.columns)
     col1, col2 = st.columns(2)
@@ -55,33 +57,36 @@ if uploaded_file is not None:
             st.write("---")
             st.subheader("Indicadores")
 
-            Ticket_Promedio = df['total_value'].sum() / df[factura].nunique()
+            # Ticket_Promedio = df['total_value'].sum() / df[factura].nunique()
             Canasta_Media = df[cantidad].sum() / df[factura].nunique()
             col3, col4, col5 = st.columns(3)
             with col3:
                 st.metric(label="Cantidades Vendidas", value=df[cantidad].sum())
-                st.metric(label="Facturas Unicas", value=df[factura].nunique())
+
             with col4:
-                st.metric(label="Canasta Media", value= round(Canasta_Media, 2))
-                df["total_value"] = df[cantidad] * df[precio]
-                st.metric(label="Revenue", value=int(df['total_value'].sum()))
+                st.metric(label="Facturas Unicas", value=df[factura].nunique())
+                # df[total_value] = df[cantidad] * df[precio]
+                # st.metric(label="Revenue", value=int(df[total_value].sum()))
+
             with col5:
-                st.metric(label="Ticket Promedio", value=round(Ticket_Promedio, 2))
-                st.metric(label="Precio Promedio por Item", value=round((Ticket_Promedio / Canasta_Media), 2))
+                st.metric(label="Canasta Media", value= round(Canasta_Media, 2))
+                # st.metric(label="Ticket Promedio", value=round(Ticket_Promedio, 2))
+                # st.metric(label="Precio Promedio por Item", value=round((Ticket_Promedio / Canasta_Media), 2))
 
     
 
 
 
-
-
-
-
-
-
-
-
-
 else: 
-    st.info('Esperando la carga de documentos')
 
+    st.info('Esperando la carga de documentos')
+    st.write("---")
+    st.subheader(":point_down: O puede descargar el archivo de prueba :point_down:")
+    st.caption ("1. Haga click derecho y seleccione guardar enlace como")
+    st.caption ("2. Coloquele un nombre seguido de (.csv)")
+
+    st.caption("""
+    [Archivo de prueba](https://raw.githubusercontent.com/joanfsalce/KPIs-demo/main/Online_Retail.csv)
+    """)
+    
+    
